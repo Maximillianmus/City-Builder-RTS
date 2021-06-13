@@ -155,7 +155,7 @@ MonoBehaviour:
   panSpeed: 11
   scrollSpeed: 1
   panThickness: 1
-  rotationSpeed: 1
+  rotationSpeed: 100
   lookSpeed: 10
   forward: 119
   backward: 115

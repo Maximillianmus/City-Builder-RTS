@@ -24,6 +24,7 @@ public class CameraController : MonoBehaviour
     public LayerMask layerMask;
 
     private Transform mainCamera;
+    private float lookXAngle = 38.765f;
 
 
     private Vector3 InputHelper() 
@@ -32,22 +33,22 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKey(forward)  || Input.mousePosition.y >= Screen.height - panThickness) 
         {
-            direction += Vector3.forward;
+            direction += transform.forward;
         }
 
         if (Input.GetKey(backward) || Input.mousePosition.y <= 0 + panThickness)
         {
-            direction += Vector3.back;
+            direction += -transform.forward;
         }
 
         if (Input.GetKey(left)  || Input.mousePosition.x <= 0 + panThickness)
         {
-            direction += Vector3.left;
+            direction += -transform.right;
         }
 
         if (Input.GetKey(right) || Input.mousePosition.x >= Screen.width - panThickness)
         {
-            direction += Vector3.right;
+            direction += transform.right;
         }
 
 
@@ -89,27 +90,33 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKey(mouse2)) 
         {
-            print("mouse2");
-   
-            if (Input.GetAxis("Mouse Y") < 0)
+
+
+
+            float newX = mainCamera.localEulerAngles.x;
+            float newY = mainCamera.localEulerAngles.y;
+
+            if (Input.GetAxis("Mouse Y") != 0)
             {
-                mainCamera.rotation = mainCamera.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse Y") * lookSpeed, Vector3.left);
+                //mainCamera.rotation = mainCamera.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse Y") * lookSpeed, -Vector3.right);
+                lookXAngle -= Input.GetAxis("Mouse Y") * lookSpeed;
+                lookXAngle = Mathf.Clamp(lookXAngle, -90, 90);
+                newX = lookXAngle;
+                print(lookXAngle);
+
             }
 
-            if (Input.GetAxis("Mouse Y") > 0)
+
+            if (Input.GetAxis("Mouse X") != 0)
             {
-                mainCamera.rotation = mainCamera.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse Y") * -lookSpeed, Vector3.left);
+                transform.rotation = transform.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse X") * lookSpeed, Vector3.up);
             }
 
-            if (Input.GetAxis("Mouse X") < 0)
-            {
-                mainCamera.rotation = mainCamera.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse X") * lookSpeed, Vector3.up);
-            }
 
-            if (Input.GetAxis("Mouse X") > 0)
-            {
-                mainCamera.rotation = mainCamera.rotation * Quaternion.AngleAxis(Input.GetAxis("Mouse X") * -lookSpeed, Vector3.up);
-            }
+
+
+
+            mainCamera.localEulerAngles = new Vector3(newX, newY, 0);
         }
     }
 
