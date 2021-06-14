@@ -10,21 +10,22 @@ public class CameraController : MonoBehaviour
     public float rotationSpeed = 100;
     public float lookSpeed = 10;
 
-    public KeyCode forward = KeyCode.W;
-    public KeyCode backward = KeyCode.S;
-    public KeyCode left = KeyCode.A;
-    public KeyCode right = KeyCode.D;
+    private KeyCode forward;
+    private KeyCode backward;
+    private KeyCode left;
+    private KeyCode right;
 
-    public KeyCode rotateLeft = KeyCode.Q;
-    public KeyCode rotateRight = KeyCode.E;
+    private KeyCode rotateLeft;
+    private KeyCode rotateRight;
 
-    public KeyCode mouse2 = KeyCode.Mouse2;
+    private KeyCode scrollwheelClick;
 
 
     public LayerMask layerMask;
 
     private Transform mainCamera;
     private float lookXAngle = 38.765f;
+    private KeyBindings keybindings;
 
 
     private Vector3 InputHelper() 
@@ -88,7 +89,7 @@ public class CameraController : MonoBehaviour
     void CameraLook() 
     {
 
-        if (Input.GetKey(mouse2)) 
+        if (Input.GetKey(scrollwheelClick)) 
         {
 
 
@@ -102,7 +103,6 @@ public class CameraController : MonoBehaviour
                 lookXAngle -= Input.GetAxis("Mouse Y") * lookSpeed;
                 lookXAngle = Mathf.Clamp(lookXAngle, -90, 90);
                 newX = lookXAngle;
-                print(lookXAngle);
 
             }
 
@@ -124,12 +124,26 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         mainCamera = transform.GetChild(0);
+        keybindings = FindObjectOfType<KeyBindings>(); KeyCode forward = keybindings.forward;
+        //assignment of keys from the Keybindings holder
+        backward = keybindings.backward;
+        left = keybindings.left;
+        right = keybindings.right;
+
+        rotateLeft = keybindings.rotateLeft;
+        rotateRight = keybindings.rotateRight;
+
+        scrollwheelClick = keybindings.scrollwheelClick;
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position = transform.position + InputHelper();
+        
+       
+
+
         CameraRotation();
         CameraLook();
     }
