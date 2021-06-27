@@ -55,11 +55,11 @@ public class CameraController : MonoBehaviour
 
         direction = direction.normalized * panSpeed * Time.deltaTime;
 
-        if (Input.mouseScrollDelta.y > 0)
+        if (Input.mouseScrollDelta.y < 0)
         {
             direction += Vector3.up * scrollSpeed;
         }
-        else if (Input.mouseScrollDelta.y < 0)
+        else if (Input.mouseScrollDelta.y > 0)
         {
             direction += Vector3.down * scrollSpeed;
         }
@@ -124,8 +124,9 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         mainCamera = transform.GetChild(0);
-        keybindings = FindObjectOfType<KeyBindings>(); KeyCode forward = keybindings.forward;
+        keybindings = FindObjectOfType<KeyBindings>(); 
         //assignment of keys from the Keybindings holder
+        forward = keybindings.forward;
         backward = keybindings.backward;
         left = keybindings.left;
         right = keybindings.right;
