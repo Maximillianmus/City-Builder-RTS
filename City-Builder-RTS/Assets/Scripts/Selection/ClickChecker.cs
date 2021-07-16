@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+//this object currently only handles clicking in the world and not UI
+//so if UI clicking should be implemented this is probably a fitting place to do it
 public class ClickChecker : MonoBehaviour
 {
 
@@ -33,7 +38,9 @@ public class ClickChecker : MonoBehaviour
             {
                 Selectable selected = hit.collider.GetComponent<Selectable>();
                 if (selected != null)
-                    selected.Select();
+                    selected.Toggle();
+
+                //if more types of clicking should be added, they should be added here. For example UI
             }
            
         }
@@ -47,12 +54,10 @@ public class ClickChecker : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                //no functionality as of right now
+               //should probably be movement for units or deselect for everything else.
             }
 
         }
     }
-
-    //activates when the object is clicked on
-    //TODO add left and right click
 
 }

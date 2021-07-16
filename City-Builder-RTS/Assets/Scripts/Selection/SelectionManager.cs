@@ -34,4 +34,24 @@ public class SelectionManager : MonoBehaviour
         }
 
     }
+
+    //this function deselects everything except the input
+    //if the selection doesn't contain the object everything is deselected
+    public void KeepOne(GameObject selectedObject)
+    {
+
+        int selectedIndex = currentlySelected.IndexOf(selectedObject);
+        int currentRemoval = 0;
+
+        int size = currentlySelected.Count;
+        for (int i = 0; i < size; i++)
+        {
+            if (i == selectedIndex)
+                currentRemoval++;
+            else
+                currentlySelected[currentRemoval].GetComponent<Selectable>().DeSelect();
+        }
+    }
+
+
 }

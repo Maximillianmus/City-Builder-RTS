@@ -7,9 +7,15 @@ public abstract class Selectable : MonoBehaviour
     public bool isSelected;
     protected SelectionManager selectionManager;
 
+    private KeyCode multiSelectHoldButton;
+    private KeyBindings keyBindings;
+
     private void Awake()
     {
         selectionManager = FindObjectOfType<SelectionManager>();
+        keyBindings = FindObjectOfType<KeyBindings>();
+        multiSelectHoldButton = keyBindings.multiSelectHoldButton;
+
     }
 
 
@@ -19,6 +25,8 @@ public abstract class Selectable : MonoBehaviour
     {
         if(!isSelected)
         {
+           
+   
             selectionManager.AddToList(gameObject);
             isSelected = true;
             SelectHelper();
@@ -39,18 +47,30 @@ public abstract class Selectable : MonoBehaviour
     }
 
 
-    //toggles the game object
+    //Toggles between selections
+    //is the default way of selecting objects in the world so it handles multi selecting
     public  void Toggle()
     {
         if (isSelected)
-            selectionManager.RemoveFromList(gameObject);
+        {
+            //checks is a multi select is happening or not
+            //if it is only this objects is deselected
+            //if it is not this object is instead selected
+            if (!Input.GetKey(multiSelectHoldButton))
+                selectionManager.KeepOne(gameObject);
+            else
+                DeSelect();
+        }
         else
-            selectionManager.AddToList(gameObject);
+        {
+            //checks is a multi select is happening or not, deselects everything if it is not
+            if (!Input.GetKey(multiSelectHoldButton))
+                selectionManager.EmptySelection();
 
-        isSelected = !isSelected;
+            Select();
+        }
         ToggleHelper();
     }
-
 
 
     //contains object specific functionality on select
