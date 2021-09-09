@@ -1,3 +1,3 @@
 # City-Builder-RTS
 This is a city builder unity project
-This line is for the purpose of learing git
+Project is in it's infancy
